@@ -20,8 +20,12 @@ RUN apk add --update \
 
 RUN pip install -U pip wheel setuptools maturin
 COPY requirements.txt .
-RUN pip install -r requirements.txt --no-build-isolation
 
+if (tag < 3.12)
+    RUN pip install -r requirements.txt --no-build-isolation
+else
+    RUN pip install -r requirements.txt
+##fi
 
 FROM python:${tag}
 WORKDIR /app
